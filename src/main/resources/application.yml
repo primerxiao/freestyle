@@ -1,0 +1,8 @@
+
+spring:
+    datasource:
+        url: jdbc:sqlite::resource:freestyle.db
+        username:
+        password:
+        driver-class-name: org.sqlite.JDBC
+        type: com.zaxxer.hikari.HikariDataSource
