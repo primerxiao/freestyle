@@ -78,6 +78,17 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/jacob/jacob -->
+        <!-- https://mvnrepository.com/artifact/jacob/jacob -->
+        <!-- https://mvnrepository.com/artifact/xyz.cofe/jacob -->
+        <dependency>
+            <groupId>xyz.cofe</groupId>
+            <artifactId>jacob</artifactId>
+            <version>1.20</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>
