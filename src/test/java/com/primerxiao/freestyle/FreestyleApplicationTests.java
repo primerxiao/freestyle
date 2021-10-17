@@ -1,6 +1,6 @@
 package com.primerxiao.freestyle;
 
-import com.primerxiao.freestyle.common.bean.T2BOX;
+import com.primerxiao.freestyle.pojo.bo.T2BOX;
 import com.primerxiao.freestyle.common.constant.AppConstant;
 import com.primerxiao.freestyle.common.constant.InstanceConstant;
 import com.primerxiao.freestyle.common.constant.MessageConstant;

@@ -6,6 +6,8 @@ import com.primerxiao.freestyle.common.dll.DmRegDll;
 import com.primerxiao.freestyle.common.dll.PrimerDll;
 import org.junit.Test;
 
+import java.io.PushbackInputStream;
+
 public class CallDllTest {
     @Test
     public void hello() {
