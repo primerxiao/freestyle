@@ -39,4 +39,8 @@ public interface DmService {
      */
     WinDef.POINT FindStrFast(WinDef.POINT pointA, WinDef.POINT pointB, String str, String colorFormat, float sim);
 
+    boolean BindWindow(WinDef.HWND hwnd, String display, String mouse, String keypad, int mode);
+
+    boolean BindWindowEx(WinDef.HWND hwnd, String display, String mouse, String keypad, String pub, int mode);
+
 }

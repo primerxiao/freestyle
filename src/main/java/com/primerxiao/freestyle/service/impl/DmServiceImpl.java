@@ -106,6 +106,37 @@ public class DmServiceImpl implements DmService {
         return null;
     }
 
+    @Override
+    public boolean BindWindow(WinDef.HWND hwnd, String display, String mouse, String keypad, int mode) {
+        Variant bindWindowEx = activeXComponent.invoke("BindWindow",
+                new Variant(getNativaValue(hwnd)),
+                new Variant(display),
+                new Variant(mouse),
+                new Variant(keypad),
+                new Variant(mode)
+        );
+        if (bindWindowEx.getInt() == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean BindWindowEx(WinDef.HWND hwnd, String display, String mouse, String keypad, String pub, int mode) {
+        Variant bindWindowEx = activeXComponent.invoke("BindWindowEx",
+                new Variant(getNativaValue(hwnd)),
+                new Variant(display),
+                new Variant(mouse),
+                new Variant(keypad),
+                new Variant(pub),
+                new Variant(mode)
+        );
+        if (bindWindowEx.getInt() == 1) {
+            return true;
+        }
+        return false;
+    }
+
     private long getNativaValue(WinDef.HWND hwnd) {
         Pointer pointer = hwnd.getPointer();
         return Pointer.nativeValue(pointer);

@@ -47,6 +47,15 @@ public class AppTest {
 
     @Test
     public void findStrTest(){
+        boolean b1 = dmService.BindWindow(t2BOX.getHwnd(),
+                "dx2", "windows", "windows", 0);
+        System.out.println(b1);
+
+        boolean b = dmService.BindWindowEx(
+                t2BOX.getHwnd(),
+                "dx2","windows","windows","",0
+        );
+        System.out.println(b);
         WinDef.POINT[] point1s = dmService.GetClientRect(t2BOX.getHwnd());
         WinDef.POINT findStrFast = dmService.FindStrFast(point1s[0], point1s[1], "开始游戏", "#0-000000", 1.0f);
         System.out.println(findStrFast.x + "  " + findStrFast.y);
