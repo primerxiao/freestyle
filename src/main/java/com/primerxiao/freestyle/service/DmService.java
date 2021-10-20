@@ -1,8 +1,12 @@
 package com.primerxiao.freestyle.service;
 
+import com.sun.istack.internal.Nullable;
 import com.sun.jna.platform.win32.WinDef;
 
 public interface DmService {
+
+    int Reg(String reg_code, @Nullable String ver_info);
+
     boolean SetDict(int index, String file);
 
     /**
@@ -42,5 +46,11 @@ public interface DmService {
     boolean BindWindow(WinDef.HWND hwnd, String display, String mouse, String keypad, int mode);
 
     boolean BindWindowEx(WinDef.HWND hwnd, String display, String mouse, String keypad, String pub, int mode);
+
+    boolean UnBindWindow();
+
+    boolean MoveTo(WinDef.POINT point);
+
+    boolean LeftClick();
 
 }

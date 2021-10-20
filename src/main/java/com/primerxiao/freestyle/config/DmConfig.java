@@ -2,6 +2,8 @@ package com.primerxiao.freestyle.config;
 
 import com.jacob.activeX.ActiveXComponent;
 import com.primerxiao.freestyle.common.dll.DmRegDll;
+import com.primerxiao.freestyle.service.DmService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -4,6 +4,7 @@ import com.primerxiao.freestyle.common.constant.AppConstant;
 import com.primerxiao.freestyle.pojo.bo.T2BOX;
 import com.primerxiao.freestyle.service.DmService;
 import com.sun.jna.platform.win32.WinDef;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,10 +23,19 @@ public class AppTest {
 
     @Before
     public void before() throws Exception {
+        int reg = dmService.Reg("rbdo9632038d7480c7853427c504ee9bb705c6d", "");
+        System.out.println(reg);
         t2BOX = new T2BOX(AppConstant.T2BOX_PATH, AppConstant.T2BOX_TITLE);
         t2BOX.start();
         boolean b = dmService.SetDict(0, "E:\\Project\\JavaProject\\freestyle\\src\\main\\resources\\dmzk.txt");
         System.out.println("设置字库状态：" + b);
+    }
+
+    @After
+    public void after(){
+
+        boolean b = dmService.UnBindWindow();
+        System.out.println("解绑窗口" + b);
     }
 
     @Test
@@ -47,17 +57,21 @@ public class AppTest {
 
     @Test
     public void findStrTest(){
-        boolean b1 = dmService.BindWindow(t2BOX.getHwnd(),
-                "dx2", "windows", "windows", 0);
-        System.out.println(b1);
-
         boolean b = dmService.BindWindowEx(
                 t2BOX.getHwnd(),
                 "dx2","windows","windows","",0
         );
         System.out.println(b);
         WinDef.POINT[] point1s = dmService.GetClientRect(t2BOX.getHwnd());
+        //查找 开始游戏的坐标
         WinDef.POINT findStrFast = dmService.FindStrFast(point1s[0], point1s[1], "开始游戏", "#0-000000", 1.0f);
+        //鼠标点击坐标
+        boolean b1 = dmService.MoveTo(findStrFast);
+        System.out.println("鼠标移动" + b1);
+        boolean b2 = dmService.LeftClick();
+        System.out.println("鼠标点击状态" + b2);
+
+
         System.out.println(findStrFast.x + "  " + findStrFast.y);
     }
 }

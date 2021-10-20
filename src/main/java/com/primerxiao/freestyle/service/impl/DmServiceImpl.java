@@ -3,6 +3,7 @@ package com.primerxiao.freestyle.service.impl;
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Variant;
 import com.primerxiao.freestyle.service.DmService;
+import com.sun.istack.internal.Nullable;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,14 @@ public class DmServiceImpl implements DmService {
 
     @Autowired
     private ActiveXComponent activeXComponent;
+
+    @Override
+    public int Reg(String reg_code, @Nullable String ver_info) {
+        Variant reg = activeXComponent.invoke("Reg", new Variant(reg_code), new Variant(ver_info));
+        int anInt = reg.getInt();
+        return anInt;
+    }
+
 
     @Override
     public boolean SetDict(int index, String file) {
@@ -87,8 +96,8 @@ public class DmServiceImpl implements DmService {
 
     @Override
     public WinDef.POINT FindStrFast(WinDef.POINT pointA, WinDef.POINT pointB, String str, String colorFormat, float sim) {
-        Variant variantX = new Variant(-1);
-        Variant variantY = new Variant(-1);
+        Variant variantX = new Variant(-1,true);
+        Variant variantY = new Variant(-1,true);
         Variant findStrFast = activeXComponent.invoke("FindStrFast",
                 new Variant(pointA.x),
                 new Variant(pointA.y),
@@ -135,6 +144,30 @@ public class DmServiceImpl implements DmService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean UnBindWindow() {
+        int unBindWindow = activeXComponent.invoke("UnBindWindow").getInt();
+        if (unBindWindow == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean MoveTo(WinDef.POINT point) {
+        int moveTo = activeXComponent.invoke("MoveTo", new Variant(point.x), new Variant(point.y)).getInt();
+        if (moveTo == 1) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean LeftClick() {
+        Variant leftClick = activeXComponent.invoke("LeftClick");
+        return leftClick.getInt() == 1;
     }
 
     private long getNativaValue(WinDef.HWND hwnd) {

@@ -8,7 +8,7 @@ import com.sun.jna.Native;
  */
 public interface DmRegDll extends Library {
 
-    DmRegDll INSTANCE = (DmRegDll) Native.load("DmReg.dll", DmRegDll.class);
+    DmRegDll INSTANCE = Native.load("DmReg.dll", DmRegDll.class);
 
     void SetDllPathA(String path,Long mode);
 }
