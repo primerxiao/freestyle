@@ -65,4 +65,6 @@ public interface DmService {
 
     boolean leftClick();
 
+    boolean leftDoubleClick();
+
 }

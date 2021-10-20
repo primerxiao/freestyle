@@ -154,7 +154,13 @@ public class DmServiceImpl implements DmService {
         return leftClick.getInt() == 1;
     }
 
-    private <T> T excuteNoVariaFun(String methodName,Class<T> tClass){
+    @Override
+    public boolean leftDoubleClick() {
+        Variant leftClick = activeXComponent.invoke(DmMethodConstant.LEFTDOUBLECLICK);
+        return leftClick.getInt() == 1;
+    }
+
+    private <T> T excuteNoVariaFun(String methodName, Class<T> tClass){
         Variant invoke = activeXComponent.invoke(methodName);
         //if (tClass instanceof int.class)
         return null;

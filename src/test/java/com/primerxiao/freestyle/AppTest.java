@@ -1,5 +1,6 @@
 package com.primerxiao.freestyle;
 
+import com.primerxiao.freestyle.common.DmZkEnum;
 import com.primerxiao.freestyle.common.constant.AppConstant;
 import com.primerxiao.freestyle.pojo.bo.T2BOX;
 import com.primerxiao.freestyle.service.DmService;
@@ -23,17 +24,12 @@ public class AppTest {
 
     @Before
     public void before() throws Exception {
-        boolean reg = dmService.reg("rbdo9632038d7480c7853427c504ee9bb705c6d", "");
-        System.out.println(reg);
         t2BOX = new T2BOX(AppConstant.T2BOX_PATH, AppConstant.T2BOX_TITLE);
         t2BOX.start();
-        boolean b = dmService.setDict(0, "E:\\Project\\JavaProject\\freestyle\\src\\main\\resources\\dmzk.txt");
-        System.out.println("设置字库状态：" + b);
     }
 
     @After
     public void after() {
-
         boolean b = dmService.unBindWindow();
         System.out.println("解绑窗口" + b);
     }
@@ -70,8 +66,19 @@ public class AppTest {
         System.out.println("鼠标移动" + b1);
         boolean b2 = dmService.leftClick();
         System.out.println("鼠标点击状态" + b2);
-
-
         System.out.println(findStrFast.x + "  " + findStrFast.y);
+    }
+
+    @Test
+    public void 选区并且登录(){
+        boolean b = dmService.bindWindowEx(
+                t2BOX.getHwnd(),
+                "dx2", "windows", "windows", "", 0
+        );
+        WinDef.POINT[] point1s = dmService.getClientRect(t2BOX.getHwnd());
+        WinDef.POINT strFast = dmService.findStrFast(point1s[0], point1s[1], DmZkEnum.T2_DOUNIUSHENGDI.getName(), DmZkEnum.T2_DOUNIUSHENGDI.getColor(), 1.0f);
+        boolean b1 = dmService.moveTo(strFast);
+        boolean b2 = dmService.leftDoubleClick();
+        System.out.println(b2);
     }
 }

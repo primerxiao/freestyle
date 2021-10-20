@@ -4,7 +4,6 @@ import com.primerxiao.freestyle.pojo.bo.T2BOX;
 import com.primerxiao.freestyle.common.constant.AppConstant;
 import com.primerxiao.freestyle.common.constant.InstanceConstant;
 import com.primerxiao.freestyle.common.constant.MessageConstant;
-import com.primerxiao.freestyle.common.dll.FreeStyleDll;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
@@ -137,8 +136,6 @@ public class FreestyleApplicationTests {
         Pointer aNull = Memory.NULL;
         //boolean b = kernel32.WriteProcessMemory(process, address, toWrite, size, null);
         BaseTSD.SIZE_T size_t = new BaseTSD.SIZE_T(4);
-        int i1 = FreeStyleDll.instance.readIntMemoryValue(handle, i.getValue(), tt, size_t);
-        System.out.println(i1);
         String hex = "0076961c";
         int i2 = Integer.parseInt(hex, 16);
         System.out.println(i2);
