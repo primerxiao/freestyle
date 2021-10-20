@@ -2,6 +2,7 @@ package com.primerxiao.freestyle.service.impl;
 
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Variant;
+import com.primerxiao.freestyle.common.constant.DmMethodConstant;
 import com.primerxiao.freestyle.service.DmService;
 import com.sun.istack.internal.Nullable;
 import com.sun.jna.Pointer;
@@ -19,16 +20,15 @@ public class DmServiceImpl implements DmService {
     private ActiveXComponent activeXComponent;
 
     @Override
-    public int Reg(String reg_code, @Nullable String ver_info) {
-        Variant reg = activeXComponent.invoke("Reg", new Variant(reg_code), new Variant(ver_info));
+    public boolean reg(String reg_code, @Nullable String ver_info) {
+        Variant reg = activeXComponent.invoke(DmMethodConstant.REG, new Variant(reg_code), new Variant(ver_info));
         int anInt = reg.getInt();
-        return anInt;
+        return anInt==1;
     }
 
-
     @Override
-    public boolean SetDict(int index, String file) {
-        Variant setDict = activeXComponent.invoke("SetDict", new Variant(index), new Variant(file));
+    public boolean setDict(int index, String file) {
+        Variant setDict = activeXComponent.invoke(DmMethodConstant.SETDICT, new Variant(index), new Variant(file));
         if (setDict.getInt() == 1) {
             return true;
         }
@@ -36,24 +36,22 @@ public class DmServiceImpl implements DmService {
     }
 
     @Override
-    public String GetWindowTitle(WinDef.HWND hwnd) {
+    public String getWindowTitle(WinDef.HWND hwnd) {
         long l = getNativaValue(hwnd);
-        Variant invoke = activeXComponent.invoke("GetWindowTitle", String.valueOf(l));
+        Variant invoke = activeXComponent.invoke(DmMethodConstant.GETWINDOWTITLE, String.valueOf(l));
         return invoke.getString();
     }
 
     @Override
-    public WinDef.POINT[] GetWindowRect(WinDef.HWND hwnd) {
-        long l = getNativaValue(hwnd);
+    public WinDef.POINT[] getWindowRect(WinDef.HWND hwnd) {
         Variant variant = new Variant();
-        variant.putLong(l);
+        variant.putLong(getNativaValue(hwnd));
         Variant vx1 = new Variant(0, true);
         Variant vx2 = new Variant(0, true);
         Variant vx3 = new Variant(0, true);
         Variant vx4 = new Variant(0, true);
-        Variant invoke = activeXComponent.invoke("GetWindowRect", variant, vx1, vx2, vx3, vx4);
-        int anInt = invoke.getInt();
-        if (anInt != 1) {
+        Variant invoke = activeXComponent.invoke(DmMethodConstant.GETWINDOWRECT, variant, vx1, vx2, vx3, vx4);
+        if (invoke.getInt() != 1) {
             throw new RuntimeException("获取窗口坐标失败");
         }
         WinDef.POINT[] points = new WinDef.POINT[2];
@@ -64,15 +62,14 @@ public class DmServiceImpl implements DmService {
 
 
     @Override
-    public WinDef.POINT[] GetClientRect(WinDef.HWND hwnd) {
-        long l = getNativaValue(hwnd);
+    public WinDef.POINT[] getClientRect(WinDef.HWND hwnd) {
         Variant variant = new Variant();
-        variant.putLong(l);
+        variant.putLong(getNativaValue(hwnd));
         Variant vx1 = new Variant(0, true);
         Variant vx2 = new Variant(0, true);
         Variant vx3 = new Variant(0, true);
         Variant vx4 = new Variant(0, true);
-        Variant invoke = activeXComponent.invoke("GetClientRect", variant, vx1, vx2, vx3, vx4);
+        Variant invoke = activeXComponent.invoke(DmMethodConstant.GETCLIENTRECT, variant, vx1, vx2, vx3, vx4);
         int anInt = invoke.getInt();
         if (anInt != 1) {
             throw new RuntimeException("获取窗口坐标失败");
@@ -84,9 +81,8 @@ public class DmServiceImpl implements DmService {
     }
 
     @Override
-    public boolean MoveWindow(WinDef.HWND hwnd, int x, int y) {
-        long nativaValue = getNativaValue(hwnd);
-        Variant moveWindow = activeXComponent.invoke("MoveWindow", new Variant(nativaValue), new Variant(x), new Variant(y));
+    public boolean moveWindow(WinDef.HWND hwnd, int x, int y) {
+        Variant moveWindow = activeXComponent.invoke(DmMethodConstant.MOVEWINDOW, new Variant(getNativaValue(hwnd)), new Variant(x), new Variant(y));
         int anInt = moveWindow.getInt();
         if (anInt == 1) {
             return true;
@@ -95,10 +91,10 @@ public class DmServiceImpl implements DmService {
     }
 
     @Override
-    public WinDef.POINT FindStrFast(WinDef.POINT pointA, WinDef.POINT pointB, String str, String colorFormat, float sim) {
+    public WinDef.POINT findStrFast(WinDef.POINT pointA, WinDef.POINT pointB, String str, String colorFormat, float sim) {
         Variant variantX = new Variant(-1,true);
         Variant variantY = new Variant(-1,true);
-        Variant findStrFast = activeXComponent.invoke("FindStrFast",
+         activeXComponent.invoke(DmMethodConstant.FINDSTRFAST,
                 new Variant(pointA.x),
                 new Variant(pointA.y),
                 new Variant(pointB.x),
@@ -116,23 +112,20 @@ public class DmServiceImpl implements DmService {
     }
 
     @Override
-    public boolean BindWindow(WinDef.HWND hwnd, String display, String mouse, String keypad, int mode) {
-        Variant bindWindowEx = activeXComponent.invoke("BindWindow",
+    public boolean bindWindow(WinDef.HWND hwnd, String display, String mouse, String keypad, int mode) {
+        Variant bindWindowEx = activeXComponent.invoke(DmMethodConstant.BINDWINDOW,
                 new Variant(getNativaValue(hwnd)),
                 new Variant(display),
                 new Variant(mouse),
                 new Variant(keypad),
                 new Variant(mode)
         );
-        if (bindWindowEx.getInt() == 1) {
-            return true;
-        }
-        return false;
+        return bindWindowEx.getInt() == 1;
     }
 
     @Override
-    public boolean BindWindowEx(WinDef.HWND hwnd, String display, String mouse, String keypad, String pub, int mode) {
-        Variant bindWindowEx = activeXComponent.invoke("BindWindowEx",
+    public boolean bindWindowEx(WinDef.HWND hwnd, String display, String mouse, String keypad, String pub, int mode) {
+        Variant bindWindowEx = activeXComponent.invoke(DmMethodConstant.BINDWINDOWEX,
                 new Variant(getNativaValue(hwnd)),
                 new Variant(display),
                 new Variant(mouse),
@@ -140,38 +133,37 @@ public class DmServiceImpl implements DmService {
                 new Variant(pub),
                 new Variant(mode)
         );
-        if (bindWindowEx.getInt() == 1) {
-            return true;
-        }
-        return false;
+        return bindWindowEx.getInt() == 1;
     }
 
     @Override
-    public boolean UnBindWindow() {
-        int unBindWindow = activeXComponent.invoke("UnBindWindow").getInt();
-        if (unBindWindow == 1) {
-            return true;
-        }
-        return false;
+    public boolean unBindWindow() {
+        int unBindWindow = activeXComponent.invoke(DmMethodConstant.UNBINDWINDOW).getInt();
+        return unBindWindow == 1;
     }
 
     @Override
-    public boolean MoveTo(WinDef.POINT point) {
-        int moveTo = activeXComponent.invoke("MoveTo", new Variant(point.x), new Variant(point.y)).getInt();
-        if (moveTo == 1) {
-            return true;
-        }
-        return false;
+    public boolean moveTo(WinDef.POINT point) {
+        int moveTo = activeXComponent.invoke(DmMethodConstant.MOVETO, new Variant(point.x), new Variant(point.y)).getInt();
+        return moveTo == 1;
     }
 
     @Override
-    public boolean LeftClick() {
-        Variant leftClick = activeXComponent.invoke("LeftClick");
+    public boolean leftClick() {
+        Variant leftClick = activeXComponent.invoke(DmMethodConstant.LEFTCLICK);
         return leftClick.getInt() == 1;
     }
+
+    private <T> T excuteNoVariaFun(String methodName,Class<T> tClass){
+        Variant invoke = activeXComponent.invoke(methodName);
+        //if (tClass instanceof int.class)
+        return null;
+    }
+
 
     private long getNativaValue(WinDef.HWND hwnd) {
         Pointer pointer = hwnd.getPointer();
         return Pointer.nativeValue(pointer);
     }
+
 }

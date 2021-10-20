@@ -16,7 +16,7 @@ public class DmConfig {
     @Bean
     public ActiveXComponent activeXComponent(){
         DmRegDll instance = DmRegDll.INSTANCE;
-        instance.SetDllPathA("E:\\Project\\JavaProject\\freestyle\\src\\main\\resources\\dll\\dm.dll", 0L);
+        instance.SetDllPathA("D:\\IdeaProjects\\freestyle\\src\\main\\resources\\dll\\dm.dll", 0L);
         return new ActiveXComponent("dm.dmsoft");
     }
 }
